@@ -1,0 +1,23 @@
+[
+  {
+    "id": "cr1774409334109",
+    "name": "Piper Market Scan",
+    "schedule": "*/30 * * * *",
+    "scheduleHuman": "Every 30 minutes",
+    "sessionTarget": "main",
+    "payloadType": "agentTurn",
+    "prompt": "Search for the latest developments in AI agents, LLM tooling, and autonomous agents.",
+    "deliveryMode": "announce",
+    "enabled": false,
+    "lastRun": "3/24/2026, 11:29:36 PM",
+    "lastStatus": "success",
+    "nextRun": "—",
+    "runHistory": [
+      {
+        "time": "3/24/2026, 11:29:36 PM",
+        "status": "success"
+      }
+    ],
+    "createdAt": "3/24/2026"
+  }
+]
