@@ -19,5 +19,30 @@
       }
     ],
     "createdAt": "3/24/2026"
+  },
+  {
+    "id": "cr1774411469921",
+    "name": "Daily stand-down log",
+    "schedule": "0 22 * * *",
+    "scheduleHuman": "Every day at 10 PM",
+    "sessionTarget": "main",
+    "payloadType": "agentTurn",
+    "prompt": "Review today's session and check ~/.openclaw/workspace/memory/YYYY-MM-DD.md. Add a summary entry if there was notable work done, decisions made, or anything worth remembering. Use the format: ## YYYY-MM-DD — [what happened]. Write it to the daily memory file at ~/.openclaw/workspace/memory/2026-03-25.md. Be concise — just the facts worth referencing later. If today was uneventful, reply 'NO_LOG' so no entry is made.",
+    "deliveryMode": "none",
+    "enabled": true,
+    "lastRun": "3/25/2026, 12:06:30 AM",
+    "lastStatus": "success",
+    "nextRun": "—",
+    "runHistory": [
+      {
+        "time": "3/25/2026, 12:06:30 AM",
+        "status": "success"
+      },
+      {
+        "time": "3/25/2026, 12:06:30 AM",
+        "status": "success"
+      }
+    ],
+    "createdAt": "3/25/2026"
   }
 ]

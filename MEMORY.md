@@ -43,6 +43,32 @@ I'm **Jon** — Ernie's sarcastic, ultra-reliable CTO-butler-chief-hustler. Dry 
 - CTA present but subtle
 - Page-by-page prompts preferred
 
+## Mission Control — Technical Architecture
+
+### WebSocket Proxy (ws-proxy.cjs)
+- Standalone Node.js script on port **8090** (ws://127.0.0.1:8090)
+- Browser connects here WITHOUT auth — proxy handles gateway challenge-response internally
+- Proxy uses device RSA auth (private key from ~/.openclaw/identity/) to get full operator.write token
+- Flow: browser → proxy (no auth) → gateway (device auth with operator.write)
+- Started automatically by `start.sh` before Vite dev server
+- The proxy ID-maps browser message IDs to proxy IDs for response routing
+
+### openclaw.ts — WebSocket Client
+- Browser-side WebSocket uses `ws://127.0.0.1:8090` 
+- `connect()`: sends blank connect, proxy handles auth, returns on `__proxy_connect__` or `__connect__`
+- `call(method, params)`: sends RPC call, returns Promise with response payload
+- `chatCompletion(messages)`: sessions.send → agent.wait → sessions.get → extracts last assistant text
+
+### Vite Dev Server (port 8080)
+- HTTP filesystem endpoints only (no WebSocket in Vite plugin now)
+- Proxies: /v1 → gateway HTTP
+- Endpoints: /__openclaw/agents, /__openclaw/sessions, /__openclaw/cron, etc.
+
+### Start Script
+- `start.sh`: cd to script dir → start ws-proxy.cjs → start Vite dev server
+- ws-proxy PID logged to /tmp/ws-proxy.log
+- Vite logs to /tmp/vite.log
+
 ## Competitive Position
 
 We are early. Very few humans are operating at this level with AI co-founders. This is a first-mover advantage.
@@ -96,3 +122,42 @@ Everything I do should be oriented toward: **building something real that replac
 
 ### Test memory
 This is a test memory entry
+
+---
+
+## 2026-03-25 — Last Night's Work (Mission Control)
+
+Ernie lost chat history after a crash/clear. I had no memory of last night's session, so I reconstructed it from session .jsonl files and git commits.
+
+### What We Built Last Night (after midnight, before Ernie went to bed):
+
+**1. Live tool call indicator in chat UI** (commit 815f86c)
+- The chat now shows a live indicator when a tool is being called — e.g., "Calling web_search..." — so the user knows what's happening during long tool-use turns
+
+**2. Per-session auto-save memory toggle** (commit 7822469) — _the memory on/off switch Ernie referenced_
+- In the Mission Control chat header: a **Memory: OFF / Memory: ON** toggle (brain icon)
+- Persists to `localStorage` per session via key `mc_auto_save_memory`
+- When ON: after each chat exchange, the system silently sends the last 6 messages to a short-lived isolation session with a memory-extraction prompt
+- That extraction session responds with JSON (or "NONE"), and if worth-saving items are found (1–3 max), they get saved to `memory/YYYY-MM-DD.md` via `createMemory()` API
+- It's best-effort — extraction failures never block or interrupt the main chat
+- Feature lives in `SessionsSection.tsx` + `openclaw.ts` (`extractMemoryFromConversation`)
+
+**3. Mission Control memory flush EOD** (commit 37e8880) — done before the above features
+
+### Mission Control Git Status
+- Project: `~/mission-control-hub/` (Lovable-generated, Vite + TypeScript + Tailwind)
+- Build output: `dist/` (built before Ernie went to bed)
+- ws-proxy: `ws-proxy.cjs` on port 8090
+- Vite dev server: port 8080
+- Start script: `start.sh` — launches ws-proxy then `npm run dev`
+
+### Key Files
+- `src/components/dashboard/sections/SessionsSection.tsx` — chat UI + memory toggle
+- `src/lib/openclaw.ts` — `extractMemoryFromConversation()` + all gateway API wrappers
+- `ws-proxy.cjs` — WebSocket auth proxy
+- `vite.config.ts` — WebSocket proxy config + dev HTTP routes
+
+### Where to Find It
+- Mission Control UI: `http://localhost:8080` (or whatever port Vite grabbed)
+- ws-proxy log: `/tmp/ws-proxy.log`
+- Vite log: `/tmp/vite.log`
