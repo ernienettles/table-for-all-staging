@@ -161,3 +161,17 @@ Ernie lost chat history after a crash/clear. I had no memory of last night's ses
 - Mission Control UI: `http://localhost:8080` (or whatever port Vite grabbed)
 - ws-proxy log: `/tmp/ws-proxy.log`
 - Vite log: `/tmp/vite.log`
+
+### Browser Control (OpenClaw)
+- Chromium installed via snap (`/snap/chromium/3390/usr/lib/chromium-browser/chrome`)
+- Startup script: `/home/ernie/.openclaw/scripts/start-browser.sh` — launches Chromium with `--no-sandbox` pointing at a writable data dir (`~/snap/chromium/common/chromium/openclaw-data`)
+- Browser DOES NOT survive gateway restarts — re-run start-browser.sh after each restart
+- CDP port: 18800 (OpenClaw connects here for browser control)
+- Status: `openclaw browser --browser-profile openclaw status`
+
+### Session Persistence
+- OpenClaw compacts sessions when context window fills (archives old messages to `.reset.*` files)
+- This is normal behavior — NOT a crash or bug
+- Session maintenance set to `warn` mode (not enforcing) so nothing auto-deletes
+- Config: `~/.openclaw/openclaw.json` → `session.maintenance.mode: "warn"`, `pruneAfter: "90d"`
+- If main chat disappears from MC, check: MC filters `agent:main:main` out if it was previously "hidden" in localStorage — fix is in store.ts line 330
