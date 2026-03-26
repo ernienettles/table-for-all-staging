@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "skills": {
+    "playwright-scraper-skill": {
+      "version": "1.2.0",
+      "installedAt": 1774550725087
+    },
+    "playwright-mcp": {
+      "version": "1.0.0",
+      "installedAt": 1774550745822
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1774550872438
+    },
+    "agentmail": {
+      "version": "1.1.1",
+      "installedAt": 1774550895995
+    }
+  }
+}
