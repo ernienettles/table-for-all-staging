@@ -1,6 +1,15 @@
 # TOOLS.md - Local Notes
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+## Workflow Preferences
+
+### Sub-agents for heavy lifting
+**Use sub-agents liberally** so Jon stays live and available. Pattern:
+- Long/parallelizable tasks → `sessions_spawn` (mode: "run")
+- Sub-agent commits each feature separately as it finishes
+- Jon stays in main session, responds immediately to Ernie
+- Commit patterns: one feature per commit, descriptive messages
+
+## Hardware & Network
 
 ## What Goes Here
 
