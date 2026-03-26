@@ -1,0 +1,13 @@
+
+// Table for All - Custom JS for button overrides
+function tfa_custom_js() {
+    echo '<script>
+    jQuery(document).ready(function($) {
+        // Contact form submit button - change to "Send Message"
+        $(".elementor-46529 button[type=submit], form.elementor-form button[type=submit]").each(function() {
+            $(this).text("Send Message");
+        });
+    });
+    </script>';
+}
+add_action('wp_head', 'tfa_custom_js', 999);
