@@ -47,3 +47,12 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 ---
 
 Add whatever helps you do your job. This is your cheat sheet.
+
+### SiteGround SSH (Table for All)
+Host: ssh.ernien.sg-host.com
+Port: 18765
+User: u2837-wmvfpoaafjg8
+Key: ~/.ssh/tfa_sg_new (RSA 4096, no passphrase)
+WordPress path: /home/customer/www/ernien.sg-host.com/public_html/
+Theme: faith-connect-child
+SCP example: scp -P 18765 -i ~/.ssh/tfa_sg_new file.txt siteground:/home/customer/www/ernien.sg-host.com/public_html/

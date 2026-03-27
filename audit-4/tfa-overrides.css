@@ -1,0 +1,120 @@
+/* ============================================================
+   Table for All - Design Overrides (v2)
+   Fixes: social icons, contact button, hero images, green colors
+   ============================================================ */
+
+/* 1. SOCIAL ICONS - Make all visible, 24px, orange #C4703B */
+.elementor-social-icon i,
+.elementor-social-icon svg {
+    color: #C4703B !important;
+    fill: #C4703B !important;
+    font-size: 24px !important;
+    opacity: 1.0 !important;
+}
+.elementor-social-icon:hover i,
+.elementor-social-icon:hover svg {
+    color: #a85c30 !important;
+    fill: #a85c30 !important;
+}
+/* Footer social icons on dark background */
+.site-footer .elementor-social-icon i,
+.footer-area .elementor-social-icon i,
+.cmsmasters-footer-small .elementor-social-icon i {
+    color: #C4703B !important;
+}
+.site-footer .elementor-social-icon:hover i,
+.footer-area .elementor-social-icon:hover i,
+.cmsmasters-footer-small .elementor-social-icon:hover i {
+    color: #ffffff !important;
+}
+
+/* 2. CONTACT PAGE - Submit button: min 48px height, full padding */
+#cmsmasters_body .elementor-38573 .forminator-field .forminator-button {
+    min-height: 52px !important;
+    padding: 14px 48px !important;
+    font-size: 16px !important;
+    border-radius: 6px !important;
+    letter-spacing: 0.5px !important;
+    background: #C4703B !important;
+    border-color: #C4703B !important;
+    color: #ffffff !important;
+}
+#cmsmasters_body .elementor-38573 .forminator-field .forminator-button:hover {
+    background: #a85c30 !important;
+    border-color: #a85c30 !important;
+    color: #ffffff !important;
+}
+#cmsmasters_body .elementor-38573 .forminator-field .forminator-button:before {
+    background: #C4703B !important;
+}
+
+/* 3. ABOUT PAGE - Replace video placeholder with hero photo */
+.elementor-46519 .elementor-element-398e467 {
+    background-image: url("http://ernien.sg-host.com/wp-content/uploads/2026/03/tfa/hero-about.jpg") !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-color: #C4703B !important;
+}
+.elementor-46519 .elementor-element-398e467::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background: rgba(0,0,0,0.35) !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+.elementor-46519 .elementor-element-398e467 > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* 4. GALLERY PAGE - Hero photo */
+.elementor-46523 .elementor-element-72f5dc2 {
+    background-image: url("http://ernien.sg-host.com/wp-content/uploads/2026/03/tfa/hero-gallery-new.jpg") !important;
+    background-size: cover !important;
+    background-position: center center !important;
+}
+.elementor-46523 .elementor-element-72f5dc2::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background: rgba(0,0,0,0.3) !important;
+    z-index: 1 !important;
+}
+
+/* 5. HOME PAGE - Hero photo */
+.elementor-46525 .elementor-element-8b4f9ef,
+.elementor-46525 .elementor-element-6f6809f {
+    background-image: url("http://ernien.sg-host.com/wp-content/uploads/2026/03/tfa/hero-peru.jpg") !important;
+    background-size: cover !important;
+    background-position: center center !important;
+}
+
+/* 6. DONATE PAGE - Hero photo */
+.elementor-46531 .elementor-element-donate_hero,
+.elementor-46531 .elementor-element-6f6809f {
+    background-image: url("http://ernien.sg-host.com/wp-content/uploads/2026/03/tfa/hero-donate.jpg") !important;
+    background-size: cover !important;
+    background-position: center center !important;
+}
+
+/* 7. ALL FORM SUBMIT BUTTONS - 48px min height */
+.forminator-field .forminator-button,
+.elementor-button[type="submit"],
+input[type="submit"] {
+    min-height: 48px !important;
+    padding: 12px 32px !important;
+}
+
+/* 8. REPLACE ANY REMAINING #2D5A3D GREEN with orange */
+.elementor,
+body,
+.cmsmasters-footer-small {
+    --e-global-color-secondary: #C4703B !important;
+    --e-global-color-primary: #C4703B !important;
+}
+
+/* 9. Light bg pages - social icons default to orange */
+.elementor-page .elementor-social-icon i {
+    color: #C4703B !important;
+}

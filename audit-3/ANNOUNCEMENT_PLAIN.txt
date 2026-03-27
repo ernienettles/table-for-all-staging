@@ -1,0 +1,102 @@
+Table for All Nightly Polish — Audit #14 — March 27, 2026
+
+Hey Ernie. Same wall, different night.
+
+---
+
+SSH ACCESS IS COMPLETELY DEAD — AGAIN
+
+SSH auth is failing with "Permission denied (publickey)" — the server is rejecting
+the RSA key. This has now failed 18 consecutive cron runs. The RSA key
+(~/.ssh/id_rsa) was regenerated March 25 and apparently was never re-authorized
+on SiteGround's SSH Keys page.
+
+The server IS reachable via HTTP (site loads fine). The WordPress REST API is
+also accessible — I can read all page content. The site is running
+WordPress + Elementor with the Faith Connect theme.
+
+---
+
+THIS AUDIT'S SCORES (screenshot + REST API analysis)
+
+Using fresh Playwright screenshots plus the WordPress REST API to read
+actual Elementor widget settings, here's what I found:
+
+- Home:       7/10   — Hero image present, nav text small, social icons faint
+- About:      6/10   — Video widget present but poster="generated-image.png"
+                         (auto-generated blank/thumbnail) — looks like black void
+- Contact:    7/10   — "Send Message" text IS present ✓, but button is
+                         elementor-size-sm (too small, < 48px height)
+- Gallery:    7/10   — Hero has no background image, just dark overlay
+- Stories:    8.5/10 — Hero image present, good overall, minor polish only
+- Donate:     8/10   — Solid orange hero, good; small refinements possible
+- VBS 2026:   9/10   — Nearly perfect, no changes needed
+
+Average this run: ~7.5/10. Site is stable, not decaying.
+
+---
+
+WHAT I FOUND VIA REST API
+
+The site uses Elementor (CMSMasters Faith Connect theme). All content is stored
+in WordPress post meta (_elementor_data). Key findings:
+
+1. About page video widget (id: 398e467):
+   - video_type: "hosted"
+   - src: TableForAllVideo.mp4 ✓ (video exists on server)
+   - poster: generated-image.png ← THIS IS THE BLACK VOID
+   - Fix: Replace poster with hero-about.jpg or another real photo
+
+2. Contact form button (id: 861c3a8):
+   - button_size: "sm" (too small)
+   - button_type: "submit" with "Send Message" text ✓
+   - Fix: Change size from "sm" to "md" for min 48px height
+
+3. Gallery hero section (id: 72f5dc2):
+   - background_background: "classic" but no background_image set
+   - Fix: Add background image to this section
+
+4. Nav active link color:
+   - Active nav items use yellow #FDC504 — low contrast on white bg
+   - Should be #C4703B (orange) for consistency
+
+5. Social icons in header:
+   - Rendered as plain text links: "Facebook | Instagram"
+   - No SVG/icon rendering — need actual icon widget or styled links
+   - Fix: Replace with icon elements, color #C4703B, size 24px
+
+6. Green #2D5A3D:
+   - Not found in REST API data — appears to be gone ✓
+
+---
+
+WHAT YOU NEED TO DO (one-time fix)
+
+Go to SiteGround → SSH Keys and re-authorize my public key:
+
+  cat ~/.ssh/id_rsa.pub
+
+Paste this key into SiteGround's SSH Keys interface for:
+  Username: u2837-wmvfpoaafjg8
+
+Once SSH works, I can push all fixes in ~20 minutes via WP-CLI + PHP.
+
+---
+
+WHAT I'D FIX FIRST (once SSH is restored)
+
+1. About video poster → replace generated-image.png with real hero photo
+2. Contact button size "sm" → "md" (min 48px height)
+3. Gallery hero → add background photo
+4. Nav active state → yellow → orange #C4703B
+5. Social icons → replace text links with SVG icons, #C4703B, 24px
+6. Global CSS tweaks for typography consistency
+
+---
+
+OVERALL CONFIDENCE: 6/10
+Site is stable but regressed from earlier peaks (8.5/10). SSH must be fixed
+before any meaningful progress. All the tools I need are on the server
+(WP-CLI, PHP), I just can't reach them.
+
+Confidence would jump to 9/10 if SSH access is restored tonight.

@@ -1,0 +1,48 @@
+// TFA CSS Fix - ADD THIS TO functions.php BEFORE the closing ?>
+// Add before the last ?>
+function tfa_custom_css() {
+    if (is_page(46519)) {
+        // About page hero - solid dark background, override any Elementor/kit CSS
+        echo '<style id="tfa-about-hero">
+        .elementor-element-a1bcabc,
+        body.postid-46519 .elementor-element-a1bcabc,
+        body.postid-46519 .elementor-section-wrap > .elementor-container:first-child,
+        .postid-46519 .elementor-section-wrap > .elementor-container:first-child {
+            background-image: none !important;
+            background-color: #1a1a1a !important;
+        }
+        .elementor-element-a1bcabc::before { display: none !important; }
+        </style>';
+    }
+    // Global - remove unwanted kit CSS rules that are CDN-cached
+    // Button hover lift
+    echo '<style id="tfa-global-css">
+    .elementor-button:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    /* Hero text shadow removed */
+    .elementor-widget-heading h1.elementor-heading-title,
+    .elementor-widget-heading h2.elementor-heading-title {
+        text-shadow: none !important;
+    }
+    /* Stories max-width removed */
+    .postid-46521 .elementor-text-editor,
+    .elementor-page-46521 .elementor-text-editor {
+        max-width: none !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    /* Yellow on black for ALL hero sections */
+    .elementor-section-wrap > .elementor-container:first-child h1,
+    .elementor-section-wrap > .elementor-container:first-child h2,
+    body:not(.postid-46521):not(.postid-46525):not(.postid-46529) .elementor-heading-title {
+        color: #F5A623 !important;
+    }
+    body:not(.postid-46521):not(.postid-46525):not(.postid-46529) .elementor-section-wrap > .elementor-container:first-child {
+        background-color: #1a1a1a !important;
+        background-image: none !important;
+    }
+    </style>';
+}
+add_action('wp_head', 'tfa_custom_css', 1);

@@ -69,6 +69,38 @@ I'm **Jon** — Ernie's sarcastic, ultra-reliable CTO-butler-chief-hustler. Dry 
 - ws-proxy PID logged to /tmp/ws-proxy.log
 - Vite logs to /tmp/vite.log
 
+## Table for All — WordPress/Elementor Lessons
+
+### SSH Access (SiteGround staging.ernien.sg-host.com)
+- Key: `~/.ssh/id_rsa` (RSA 4096, no passphrase) — WORKS as of 2026-03-27
+- Host: ssh.ernien.sg-host.com, Port: 18765, User: u2837-wmvfpoaafjg8
+- Deploy via: `scp -P 18765 -i ~/.ssh/id_rsa file.php u2837-wmvfpoaafjg8@ssh.ernien.sg-host.com:/tmp/`
+- Run via: `ssh -p 18765 -i ~/.ssh/id_rsa -o "ServerAliveInterval=60" u2837-wmvfpoaafjg8@ssh.ernien.sg-host.com "cd /home/customer/www/ernien.sg-host.com/public_html && php /tmp/script.php"`
+
+### CRITICAL: Editing `_elementor_data` Meta Without Breaking Styles
+`_elementor_data` is stored as a RAW JSON string in WordPress postmeta (NOT PHP serialized).
+- **ALWAYS** use `global $wpdb; $raw = $wpdb->get_var(...);` to read it
+- Do NOT `unserialize()` it — it is already raw JSON
+- Do NOT `json_encode()` it after editing — that double-encodes and corrupts styles
+- Use **direct string replacement**: `$raw = str_replace($old, $new, $raw);`
+- Save back with `$wpdb->update(..., ['meta_value' => $raw], ...)`
+- The DB stores `<\/p>` not `</p>` — escape sequences in JSON fields
+- Em-dashes in accordion/tab CONTENT are stored as `\u2014` (6 literal chars: `\u2014`) NOT UTF-8 bytes
+  - In PHP: `'\u2014'` = 6-char string (correct for tab content)
+  - Em-dashes in regular HTML text fields are UTF-8 bytes: `"\xe2\x80\x94"`
+
+### Page IDs (Table for All staging)
+- Home: 42506
+- About: 46519
+- Contact: 46529
+- Donate: 46525
+
+### What NOT to Touch
+- Elementor Site Settings / Global Colors / Global Fonts
+- Theme's PHP templates
+- Global CSS (kit ID 52) — clearing it wipes ALL pages
+- Kit CSS stored in `post-52.css` — regenerate via Elementor UI
+
 ## Competitive Position
 
 We are early. Very few humans are operating at this level with AI co-founders. This is a first-mover advantage.
