@@ -69,7 +69,49 @@ I'm **Jon** — Ernie's sarcastic, ultra-reliable CTO-butler-chief-hustler. Dry 
 - ws-proxy PID logged to /tmp/ws-proxy.log
 - Vite logs to /tmp/vite.log
 
-## Table for All — WordPress/Elementor Lessons
+## ⛔ ELEMENTOR WORK — ABSOLUTE RULES (CRITICAL)
+
+**THESE RULES APPLY TO ALL ELEMENTOR WORK. VIOLATING THEM HAS CAUSED REAL DAMAGE.**
+
+### ✅ RIGHT WAY: Elementor API, Not Raw JSON Surgery
+
+When adding or modifying sections/widgets in Elementor:
+1. **Build sections as a standalone Elementor Template JSON** — create the template file with proper Elementor structure
+2. **Use Elementor's import system** — `wp elementor import` or the template library
+3. **Use Elementor's PHP API** to safely copy elements from imported template into the live page:
+   ```php
+   Elementor\Plugin::instance()->db->iterate_data($data, function($element) { ... });
+   ```
+4. **Save via Elementor's own save mechanism** — NOT `$wpdb->update` directly on `_elementor_data`
+5. **Use Custom CSS (via Elementor controls)** for styling overrides — not raw CSS files or `post-52.css`
+
+### ❌ WRONG WAY: Direct String Manipulation of `_elementor_data`
+
+NEVER do raw PHP string operations (`str_replace`, `substr`, etc.) on the `_elementor_data` meta field to:
+- Insert new sections
+- Move widgets between containers
+- Restructure the page layout
+
+**What CAN be done safely via string replacement:**
+- Editing existing text content INSIDE a widget (editor text, heading text, button text)
+- Changing widget settings that are simple string values (title, link URL)
+- Anything that doesn't change JSON structure or array boundaries
+
+### Why This Matters
+Direct string manipulation on `_elementor_data` creates invalid JSON because:
+- JSON array syntax (`[,]`) is fragile — off-by-one errors corrupt the entire document
+- UTF-8 encoding issues break em-dashes, special chars
+- PHP heredoc/SSH round-trips corrupt special characters silently
+- Elementor can't parse malformed JSON, which wipes page styling on next load
+
+**The Manus method:** Treat Elementor as a rendering engine with a proper PHP API, not a text file. Use `wp-load.php`, `wp elementor` commands, and Elementor's `iterate_data` / template import system. If it can't be done through those channels, it doesn't get done.
+
+### ⚠️ BEFORE ANY ELEMENTOR CHANGE: Get a DB Backup
+```bash
+ssh siteground "wp db export /tmp/backup_$(date +%Y%m%d).sql 2>/dev/null"
+```
+
+## Table for All — WordPress/Elementor Notes
 
 ### SSH Access (SiteGround staging.ernien.sg-host.com)
 - Key: `~/.ssh/id_rsa` (RSA 4096, no passphrase) — WORKS as of 2026-03-27
